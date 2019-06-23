@@ -1,33 +1,35 @@
 <template>
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+  <v-app class="tt-app">
+    <v-container :justify-center="true" :d-flex="true">
+      <v-card class="tt-app__main-card">
+        <v-toolbar>
+          <h1>Tim's Todos</h1>
+        </v-toolbar>
+        <div class="tt-app__router-main">
+          <router-view></router-view>
+        </div>
+      </v-card>
+    </v-container>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import HelloWorld from './components/HelloWorld';
+import { GET_TODOS } from '@/api-service';
 
 export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  mounted() {
+    GET_TODOS()
+    .then((response)=>{
+      this.$store.commit('setTodos', response.data)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
   },
   data () {
     return {
@@ -36,3 +38,18 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .tt-app {
+    background-color: rgb(84, 136, 231) !important;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    &__main-card {
+      max-width: 800px;
+    }
+    &__main-router {
+      max-height: 100%;
+      overflow-y: auto;
+    }
+  }
+</style>
