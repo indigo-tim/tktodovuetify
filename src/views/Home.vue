@@ -18,7 +18,7 @@
         </v-layout>
       </v-container>
     </v-toolbar>
-    <Todo v-for="(todo, index) in todos" :key="index" :todo="todo"/>
+    <Todo @delete="handleDelete" v-for="(todo, index) in todos" :key="index" :todo="todo"/>
     <v-dialog v-model="showCreate" max-width="500px">
       <v-card class="tt-home-view__create-dialog">
         <div class="pa-5">
@@ -38,7 +38,7 @@
 <script>
 import Todo from "@/components/Todo";
 import { mapState } from "vuex";
-import { CREATE_TODO } from "@/api-service";
+import { CREATE_TODO, DELETE_TODO } from "@/api-service";
 
 export default {
   components: {
@@ -55,6 +55,14 @@ export default {
         this.createError = true;
         console.log(error);
       })
+    },
+    handleDelete(id) {
+      this.$store.commit('isDeleting', id);
+      DELETE_TODO(id).then((response) => {
+        this.$store.commit('isNotDeleting', id);
+      }).catch((err) => {
+        console.log(err);
+      }) 
     }
   },
   computed: {

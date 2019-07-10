@@ -4,6 +4,8 @@
       <v-card class="tt-app__main-card">
         <v-toolbar>
           <h1>Tim's Todos</h1>
+         
+     
         </v-toolbar>
         <div class="tt-app__router-main">
           <router-view></router-view>
@@ -17,6 +19,7 @@
 import HelloWorld from './components/HelloWorld';
 import { GET_TODOS } from '@/api-service';
 
+
 export default {
   name: 'App',
   components: {
@@ -25,6 +28,9 @@ export default {
   mounted() {
     GET_TODOS()
     .then((response)=>{
+      response.data.forEach((item) => {
+        item.isDeleting = false;
+      });
       this.$store.commit('setTodos', response.data)
     })
     .catch((error)=>{

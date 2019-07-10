@@ -22,17 +22,17 @@ const CREATE_TODO = (name)=> {
         })
     })
 }
-// const GET_TODOS = ()=> {
-//     return new Promise((resolve, reject)=>{
-//         axios.get(`${API_URL}/todos/read`)
-//         .then((response)=>{
-//             resolve(response)
-//         })
-//         .catch((err)=>{
-//             reject(err)
-//         })
-//     })
-// }
+const DELETE_TODO = (id)=> {
+    return new Promise((resolve, reject)=>{
+        axios.post(`${API_URL}/todos/delete`, {_id: id})
+        .then((response)=>{
+            resolve(response)
+        })
+        .catch((err)=>{
+            reject(err)
+        })
+    })
+}
 // const GET_TODOS = ()=> {
 //     return new Promise((resolve, reject)=>{
 //         axios.get(`${API_URL}/todos/read`)
@@ -47,5 +47,6 @@ const CREATE_TODO = (name)=> {
 
 export {
     GET_TODOS,
-    CREATE_TODO
+    CREATE_TODO,
+    DELETE_TODO
 }
