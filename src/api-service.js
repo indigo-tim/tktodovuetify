@@ -33,6 +33,17 @@ const DELETE_TODO = (id)=> {
         })
     })
 }
+const UPDATE_TODO = (todo)=> {
+    return new Promise((resolve, reject)=>{
+        axios.patch(`${API_URL}/todos/update`, todo)
+        .then((response)=>{
+            resolve(response)
+        })
+        .catch((err)=>{
+            reject(err)
+        })
+    })
+}
 // const GET_TODOS = ()=> {
 //     return new Promise((resolve, reject)=>{
 //         axios.get(`${API_URL}/todos/read`)
@@ -48,5 +59,6 @@ const DELETE_TODO = (id)=> {
 export {
     GET_TODOS,
     CREATE_TODO,
-    DELETE_TODO
+    DELETE_TODO,
+    UPDATE_TODO
 }

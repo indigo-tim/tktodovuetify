@@ -18,7 +18,11 @@
         </v-layout>
       </v-container>
     </v-toolbar>
-    <Todo @delete="handleDelete" v-for="(todo, index) in todos" :key="index" :todo="todo"/>
+    <h3>Todo</h3>
+    <Todo @delete="handleDelete" @onUpdate="handleUpdate($event)" v-for="(todo, index) in incompleteTodos" :key="index" :todo="todo"/>
+    <h3>Done</h3>
+    <Todo @delete="handleDelete" @onUpdate="handleUpdate($event)" v-for="(todo, index) in getCompletedTodos" :key="index" :todo="todo"/>
+
     <v-dialog v-model="showCreate" max-width="500px">
       <v-card class="tt-home-view__create-dialog">
         <div class="pa-5">
@@ -37,12 +41,16 @@
 
 <script>
 import Todo from "@/components/Todo";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { CREATE_TODO, DELETE_TODO } from "@/api-service";
 
 export default {
   components: {
     Todo
+  },
+  mounted() {
+    console.log(this.incompleteTodos);
+    console.log(this.completedTodos);
   },
   methods: {
     createTodo() {
@@ -63,13 +71,34 @@ export default {
       }).catch((err) => {
         console.log(err);
       }) 
+    },
+    handleUpdate(todo) {
+      this.$store.commit('isUpdating', todo._id);
+      if(todo.status == 'complete') {
+        this.$store.commit('markIncomplete', todo._id);
+      } else {
+        this.$store.commit('markComplete', todo._id);
+      }
+    },
+    getCompletedTodos(){
+      let tempCompletedArr = [];
+      this.todos.forEach((todo) => {
+        if(todo.status == 'complete') {
+          tempCompletedArr.push(todo);
+        }
+      });
+      return tempCompletedArr;
     }
   },
 
   computed: {
-    ...mapState({
-      todos: state => state.todos
-    })
+    ...mapState([
+      "todos"
+    ]),
+    ...mapGetters([
+      'completedTodos',
+      'incompleteTodos'
+    ])
   },
   watch: {
     showCreate(val) {
@@ -81,6 +110,9 @@ export default {
         const element = this.$el.querySelector('.tt-home-view__create-dialog__input input')
         if (element) this.$nextTick(() => { element.focus()})
       }
+    },
+    completed(val) {
+      console.log(val);
     }
   },
   data() {

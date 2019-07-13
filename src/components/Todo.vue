@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-container class="tt-todo__item-container" :class="{'is-deleting':todo.isDeleting}">
+        <v-container class="tt-todo__item-container" :class="{'is-deleting':todo.isDeleting, 'is-updating':todo.isUpdating}">
             <v-layout @click="initDelete" flex align-center class="tt-todo__item-container__edit">
                 <button  color="error" class="text--white tt-todo__item-container__edit__delete-button">
                     <v-icon color="white" p-4>delete</v-icon>
@@ -14,7 +14,7 @@
                 </v-flex>
                 <v-flex xs6>
                     <v-layout flex justify-end>
-                        <v-btn outline small fab color="success" :grow="false">
+                        <v-btn @click="$emit('onUpdate', todo)" :outline="todo.status !== 'complete'" small fab color="success" :grow="false">
                             <v-icon>check</v-icon>
                         </v-btn>
                     </v-layout>
@@ -73,6 +73,11 @@ export default {
             }
         }
         &.is-deleting {
+            background-color: rgb(206, 206, 206);
+            pointer-events: none;
+            color: #ffffff;
+        }
+        &.is-updating {
             background-color: rgb(206, 206, 206);
             pointer-events: none;
             color: #ffffff;

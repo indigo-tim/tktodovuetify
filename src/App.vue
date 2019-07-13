@@ -30,6 +30,7 @@ export default {
     .then((response)=>{
       response.data.forEach((item) => {
         item.isDeleting = false;
+        item.isUpdating = false;
       });
       this.$store.commit('setTodos', response.data)
     })
