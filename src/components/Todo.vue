@@ -1,8 +1,8 @@
 <template>
     <v-card>
         <v-container class="tt-todo__item-container" :class="{'is-deleting':todo.isDeleting}">
-            <v-layout flex align-center class="tt-todo__item-container__edit">
-                <button @click="initDelete" color="error" class="text--white tt-todo__item-container__edit__delete-button">
+            <v-layout @click="initDelete" flex align-center class="tt-todo__item-container__edit">
+                <button  color="error" class="text--white tt-todo__item-container__edit__delete-button">
                     <v-icon color="white" p-4>delete</v-icon>
                 </button>
             </v-layout>
@@ -62,7 +62,15 @@ export default {
             height: 100%;
             width: 25px;
             background-color: rgb(245, 97, 97);
-            transition: left 250ms ease-in-out;
+            transition: left 250ms ease-in-out, background-color 100ms ease;
+            &:hover {
+                    background-color: rgb(190, 56, 56);
+                }
+            &__delete-button {      
+                &:focus {
+                    outline: 0;
+                }
+            }
         }
         &.is-deleting {
             background-color: rgb(206, 206, 206);

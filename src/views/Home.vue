@@ -23,7 +23,7 @@
       <v-card class="tt-home-view__create-dialog">
         <div class="pa-5">
           <h3>Type in your Todo</h3>
-          <v-text-field v-model="newTodoName" @keyup.enter.native="createTodo()" label="Todo Name" autofocus my-5></v-text-field>
+          <v-text-field class="tt-home-view__create-dialog__input" v-model="newTodoName" @keyup.enter.native="createTodo()" label="Todo Name" my-5></v-text-field>
           <v-layout flex justify-end>
           <v-btn color="success" :grow="false" :loading="isCreating" @click="createTodo()">
             Create
@@ -65,6 +65,7 @@ export default {
       }) 
     }
   },
+
   computed: {
     ...mapState({
       todos: state => state.todos
@@ -75,6 +76,11 @@ export default {
       this.newTodoName = "";
       this.isCreating = false;
       this.createError = false;
+      console.log(document.querySelector(".tt-home-view__create-dialog__input input"))
+      if(val) {
+        const element = this.$el.querySelector('.tt-home-view__create-dialog__input input')
+        if (element) this.$nextTick(() => { element.focus()})
+      }
     }
   },
   data() {
